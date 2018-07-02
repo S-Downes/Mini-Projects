@@ -11,7 +11,26 @@ app = Flask(__name__)
 
 ## Base method
 def index():
-    return "<h2>Hello there!</h2>"
+    """Contains the instructions for using the application"""
+    return "<strong>To send a message use the following syntax:</strong> /USERNAME/MESSAGE"
+    
+
+# Username view
+@app.route("/<username>")
+
+## Username method
+def user(username):
+    """Provides a greeting to the user"""
+    return "Hello and welcome " + username
+    
+    
+# Message view
+@app.route("/<username>/<message>")
+
+## Message method
+def message(username, message):
+    """Allows the user to send messages"""
+    return "{0} : {1}".format(username, message)
     
     
 # Configuration
