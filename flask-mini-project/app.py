@@ -1,5 +1,6 @@
 import os
-from flask import Flask, redirect
+from datetime import datetime
+from flask import Flask, redirect, render_template, request
 
 
 # Flask setup
@@ -11,22 +12,30 @@ messages = []
 # Add messages method
 def add_messages(username, message):
     """Adds and stores messages for each user"""
-    messages.append("{} : {}".format(username, message))
+    current_time = datetime.now().strftime("%H:%M:%S")
+    message_dict = {"timestamp":current_time, "username":username, "message":message }
+    messages.append(message_dict)
+    # messages.append("( {} ) {} : {}".format(current_time, username, message))
     
     
 # Get messages method
 def get_messages():
     """Returns all messages in a readable format for a user"""
-    return "<br>".join(messages)
+    return messages
 
 
 # Base view
-@app.route("/")
+@app.route("/", methods = ["GET", "POST"])
 
 ## Base method
 def index():
     """Contains the instructions for using the application"""
-    return "<strong>To send a message use the following syntax:</strong> /USERNAME/MESSAGE"
+    if request.method == "POST":
+        with open("data/users.txt", "a+") as user_list:
+            user_list.write(request.form["username"] + "\n")
+        return redirect(request.form["username"])
+    return render_template("index.html")
+    
     
 
 # Username view
@@ -35,7 +44,8 @@ def index():
 ## Username method
 def user(username):
     """Provides a greeting to the user and uses get_messages() to return the messages for that user"""
-    return "<h1>Hello and Welcome {0}</h1> {1}".format(username, get_messages())
+    messages = get_messages()
+    return render_template("chat.html", username = username, chat_messages = messages)
     
     
 # Message view
