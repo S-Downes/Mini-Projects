@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to the Flask Chat Home Page</title>
+
+</head>
+
+<body>
+
+    <h1>Hello {{ username }} and Welcome!</h1>
+    {% for message in chat_messages %}
+    <p>({{ message["timestamp"] }}) Message From {{ message["username"].title() }} - {{ message["message"] }}</p>
+    {% endfor %}
+
+    <!--This will refresh each users chat page every 5 seconds in order to generate the latest messages-->
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
+    </script>
+
+</body>
+
+</html>
