@@ -6,21 +6,29 @@ from flask import Flask, redirect, render_template, request
 # Flask setup
 app = Flask(__name__)
 
-messages = []
 
-
+# Write to file method
+def write_to_file(filename, data):
+    """Opens a file in append mode and writes the contents of data to the file"""
+    with open(filename, "a+") as file:
+        file.writelines(data)
+        
+        
 # Add messages method
 def add_messages(username, message):
-    """Adds and stores messages for each user"""
-    current_time = datetime.now().strftime("%H:%M:%S")
-    message_dict = {"timestamp":current_time, "username":username, "message":message }
-    messages.append(message_dict)
-    # messages.append("( {} ) {} : {}".format(current_time, username, message))
+    """Adds and stores messages for each user in a text file called messages.txt"""
+    write_to_file("data/messages.txt", "( {0} ) {1} - {2}\n".format(
+            datetime.now().strftime("%H:%M:%S"),
+            username.title(), 
+            message))
     
     
 # Get messages method
 def get_messages():
-    """Returns all messages in a readable format for a user"""
+    """Returns all messages in a readable format for a user by reading the messages.txt file and outputting this in chat.html"""
+    messages = []
+    with open ("data/messages.txt", "r+") as chat_messages:
+        messages = chat_messages.readlines()
     return messages
 
 
@@ -29,15 +37,13 @@ def get_messages():
 
 ## Base method
 def index():
-    """Contains the instructions for using the application"""
+    """Method that Handles the POST request"""
     if request.method == "POST":
-        with open("data/users.txt", "a+") as user_list:
-            user_list.write(request.form["username"] + "\n")
+        write_to_file("data/users.txt", request.form["username"] + "\n")
         return redirect(request.form["username"])
     return render_template("index.html")
     
     
-
 # Username view
 @app.route("/<username>")
 

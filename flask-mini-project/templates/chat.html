@@ -14,7 +14,7 @@
 
     <h1>Hello {{ username }} and Welcome!</h1>
     {% for message in chat_messages %}
-    <p>({{ message["timestamp"] }}) Message From {{ message["username"].title() }} - {{ message["message"] }}</p>
+    <p>Message : {{ message }}</p>
     {% endfor %}
 
     <!--This will refresh each users chat page every 5 seconds in order to generate the latest messages-->
