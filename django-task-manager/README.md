@@ -1,9 +1,8 @@
-# Django Task Manager
+# Description
+A web application built with the Django framework that enables users to add tasks to a list and manage their status.
 
-A basic web application hosted by heroku and built with the Django framework that enables users to add tasks to a list and manage their status.
+## Deployment
+The app is hosted on the Heroku platform and can be found by following the link below.
 
-# Deployment
+    https://django-task-manager.herokuapp.com/
 
-## Heroku
-The app can be found at the following link;
-* https://django-task-manager.herokuapp.com/
