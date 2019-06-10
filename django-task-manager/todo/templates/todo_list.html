@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+</head>
+
+<body>
+    
+    <h1>To do list ...</h1>
+    
+    <!-- Apply template logic to the results dictionary to access each Item name -->
+    <table>
+    
+        {% for item in items %}
+        <tr>
+            {% if item.done %}
+            <td><strike>{{ item.name }}</strike></td>
+            {% else %}
+            <td>{{ item.name }}</td>
+            {% endif %}
+            
+            <!-- Toggle done for each item using .id -->
+            <td>
+                <form method = "POST" action = "toggle/{{ item.id }}">
+                    {% csrf_token %}
+                    <input type = "submit" value = "Toggle Status">
+                </form>
+            </td>
+        
+            <!-- Edit template link for each item using .id -->
+            <!-- NOTE: No CSRF token required as not using POST method! -->
+            <td>
+                <form method = "GET" action = "edit/{{ item.id }}">
+                    <input type = "submit" value = "Edit">
+                </form>
+            </td>
+            
+        </tr>
+    
+        <!-- If our dictionary is empty, return this -->
+        {% empty %}
+        
+        <p>All tasks are done. Nice Work!</p>
+    
+        {% endfor %}
+    
+    </table>
+    
+    <!-- Add Item -->
+    <form method = "GET" action = "add">
+        <input type = "submit" value = "Add Item">
+    </form>
+    
+</body>
+</html>
